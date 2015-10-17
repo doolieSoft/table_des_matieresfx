@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -45,6 +46,8 @@ import table_des_matieresfx.lib.MyUtil;
 public class FXMLDocumentController implements Initializable {
 
     private Connection connection;
+    
+    private Predicate<Prelevement> predicateNom;
 
     private ObservableList<Prelevement> data;
     SortedList<Prelevement> sortedData;
@@ -120,8 +123,6 @@ public class FXMLDocumentController implements Initializable {
         type.setCellValueFactory(new PropertyValueFactory<Prelevement, String>("type"));
         casier.setCellValueFactory(new PropertyValueFactory<Prelevement, String>("casier"));
 
-        
-       
         datepckAjouterDate.setConverter(new StringConverter<LocalDate>() {
             private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
@@ -145,7 +146,7 @@ public class FXMLDocumentController implements Initializable {
         tablePrelevement.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tablePrelevement.setRowFactory(tv -> {
             TableRow<Prelevement> row = new TableRow<>();
-            
+
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() > 0 && (!row.isEmpty())) {
 
@@ -175,57 +176,71 @@ public class FXMLDocumentController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
-        
-         // 1. Wrap the ObservableList in a FilteredList (initially display all data).
+
+        // 1. Wrap the ObservableList in a FilteredList (initially display all data).
         FilteredList<Prelevement> filteredData = new FilteredList<>(data, p -> true);
 
-        // 2. Set the filter Predicate whenever the filter changes.
-        txtRechercheNom.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(prelevement -> {
-
-                // Compare first name and last name of every person with filter text.
-                String lowerCaseFilter = newValue.toLowerCase();
-
-                if (prelevement.getNom().toLowerCase().contains(lowerCaseFilter) || 
-                        prelevement.getType().toLowerCase().contains(lowerCaseFilter) ||
-                        newValue.isEmpty() ||
-                        newValue == null) {
-                    return true; // Filter matches first name.
-                }
-                return false; // Does not match.
-            });
+        dateRecherche.setOnKeyReleased(e -> {
+            filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()));
+        });        
+        txtRechercheNom.setOnKeyReleased(e -> {
+            filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()));
         });
+        txtRechercheType.setOnKeyReleased(e -> {
+            filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()));
+        });
+        // 2. Wrap the FilteredList in a SortedList. 
+        sortedData = new SortedList<>(filteredData);
 
-        
-        txtRechercheType.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(prelevement -> {
-                // If filter text is empty, display all prelevement.
-                if (newValue == null || newValue.isEmpty()) {
+        // 3. Bind the SortedList comparator to the TableView comparator.
+        sortedData.comparatorProperty().bind(tablePrelevement.comparatorProperty());
+
+        // 4. Add sorted (and filtered) data to the table.
+        tablePrelevement.setItems(sortedData);
+
+    }
+    
+    public Predicate<Prelevement> isNomInTable() {
+        return n -> {
+                if (txtRechercheNom.getText() == null || txtRechercheNom.getText().isEmpty()) {
                     return true;
                 }
 
-                // Compare first name and last name of every person with filter text.
-                String lowerCaseFilter = newValue.toLowerCase();
+                String[] word = MyUtil.toUpperCaseExceptµ(txtRechercheNom.getText()).split(" ");
+                for (String s : word) {
+                    if (!MyUtil.toUpperCaseExceptµ(n.getNom()).contains(s)) {
+                        return false;
+                    }
+                }
+                return true;
+        };
+    }
+    public Predicate<Prelevement> isTypeInTable() {
+        return n -> {
+                if (txtRechercheType.getText() == null || txtRechercheType.getText().isEmpty()) {
+                    return true;
+                }
 
-                if (prelevement.getNom().toLowerCase().contains(lowerCaseFilter) || 
-                        prelevement.getType().toLowerCase().contains(lowerCaseFilter)) {
-                    return true; // Filter matches first name.
-                }                 
-                return false; // Does not match.
-            });
-        });
-        
-        // 3. Wrap the FilteredList in a SortedList. 
-        sortedData = new SortedList<>(filteredData);
+                String[] word = MyUtil.toUpperCaseExceptµ(txtRechercheType.getText()).split(" ");
+                for (String s : word) {
+                    if (!MyUtil.toUpperCaseExceptµ(n.getType()).contains(s)) {
+                        return false;
+                    }
+                }
+                return true;
+        };
+    }
+    public Predicate<Prelevement> isDateInTable() {
+        return n -> {
+                if (dateRecherche.getEditor().getText() == null || dateRecherche.getEditor().getText().isEmpty()) {
+                    return true;
+                }
 
-        // 4. Bind the SortedList comparator to the TableView comparator.
-        sortedData.comparatorProperty().bind(tablePrelevement.comparatorProperty());
-
-        // 5. Add sorted (and filtered) data to the table.
-        tablePrelevement.setItems(sortedData);
-        
-        
+                if(n.getDate().contains(dateRecherche.getEditor().getText())) {
+                        return true;
+                }
+                return false;
+        };
     }
 
     @FXML
@@ -252,7 +267,7 @@ public class FXMLDocumentController implements Initializable {
             int ret = statement.executeUpdate(query);
 
             int indexSelected = tablePrelevement.getSelectionModel().getSelectedIndex();
-            int indexSource = sortedData.getSourceIndexFor(data,indexSelected);
+            int indexSource = sortedData.getSourceIndexFor(data, indexSelected);
             data.set(indexSource,
                     new Prelevement(Integer.valueOf(txtfldId.getText()),
                             datepckAjouterDate.getEditor().getText(),
@@ -260,7 +275,6 @@ public class FXMLDocumentController implements Initializable {
                             txtfldAjouterType.getText(),
                             txtfldAjouterCasier.getText(),
                             txtfldAjouterCheminComplet.getText()));
-            
 
         } catch (SQLException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
@@ -279,7 +293,7 @@ public class FXMLDocumentController implements Initializable {
             int ret = statement.executeUpdate(query);
 
             int indexSelected = tablePrelevement.getSelectionModel().getSelectedIndex();
-            int indexSource = sortedData.getSourceIndexFor(data,indexSelected);
+            int indexSource = sortedData.getSourceIndexFor(data, indexSelected);
             data.remove(indexSource);
             tablePrelevement.getSelectionModel().clearSelection();
             clearForm();
