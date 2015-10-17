@@ -231,7 +231,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     public void onButtonAjouterPrelevement() {
         System.out.println("Click on enregistrer");
-        tablePrelevement.getItems().add(new Prelevement(Integer.valueOf(txtfldId.getText()), datepckAjouterDate.getEditor().getText(), txtfldAjouterNom.getText(), txtfldAjouterType.getText(), txtfldAjouterCasier.getText(), txtfldAjouterCheminComplet.getText()));
+        tablePrelevement.getItems().add(new Prelevement(0, datepckAjouterDate.getEditor().getText(), txtfldAjouterNom.getText(), txtfldAjouterType.getText(), txtfldAjouterCasier.getText(), txtfldAjouterCheminComplet.getText()));
 
     }
 
