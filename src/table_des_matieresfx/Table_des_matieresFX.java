@@ -29,7 +29,6 @@ public class Table_des_matieresFX extends Application {
         stage.show();
     }
     
-
     /**
      * @param args the command line arguments
      */
