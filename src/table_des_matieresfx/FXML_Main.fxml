@@ -35,8 +35,7 @@
                                         <DatePicker fx:id="dateRecherche" promptText="Date" />
                                         <TextField fx:id="txtRechercheNom" promptText="Nom" />
                                         <TextField fx:id="txtRechercheType" promptText="Type" />
-                                        <TextField fx:id="txtRechercheCasier" promptText="Casier" />
-                                        <CheckBox mnemonicParsing="false" text="Lien brisé" />
+                                        <CheckBox fx:id="chkLienBrise" mnemonicParsing="false" text="Lien brisé" />
                                         <Button fx:id="btnEffacerFiltre" mnemonicParsing="false" onAction="#onButtonEffacerFiltre" text="Effacer le filtre" />
                                     </children>
                                 </HBox>
