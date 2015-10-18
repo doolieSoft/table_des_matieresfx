@@ -24,6 +24,7 @@ public class Table_des_matieresFX extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("FXML_Main.fxml"));
 
         Scene scene = new Scene(root);
+        setUserAgentStylesheet(STYLESHEET_CASPIAN);
         
         stage.setTitle("Table des matieres FX");
         stage.setScene(scene);

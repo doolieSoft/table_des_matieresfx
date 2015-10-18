@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -38,6 +39,9 @@
                                         <CheckBox fx:id="chkLienBrise" mnemonicParsing="false" text="Lien brisé" />
                                         <Button fx:id="btnEffacerFiltre" mnemonicParsing="false" onAction="#onButtonEffacerFiltre" text="Effacer le filtre" />
                                     </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
                                 </HBox>
                             </children>
                         </AnchorPane>
@@ -85,7 +89,7 @@
                                                 <TextField fx:id="txtfldAjouterCheminComplet" promptText="Chemin document" />
                                                 <HBox spacing="5.0">
                                                     <children>
-                                                        <Button fx:id="btnAjouterPrelevement" defaultButton="true" mnemonicParsing="false" onAction="#onButtonAjouterPrelevement" text="Ajouter" />
+                                                        <Button fx:id="btnAjouterPrelevement" mnemonicParsing="false" onAction="#onButtonAjouterPrelevement" text="Ajouter" />
                                                         <Button fx:id="btnModifierPrelevement" mnemonicParsing="false" onAction="#onButtonModifierPrelevement" text="Modifier" />
                                                         <Button fx:id="btnSupprimerPrelevement" mnemonicParsing="false" onAction="#onButtonSupprimerPrelevement" text="Supprimer" />
                                                         <Region HBox.hgrow="ALWAYS" />
