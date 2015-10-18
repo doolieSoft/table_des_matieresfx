@@ -5,6 +5,7 @@
  */
 package table_des_matieresfx;
 
+import java.io.File;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,7 +16,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 import java.util.logging.Level;
@@ -28,6 +28,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -104,7 +105,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextField txtRechercheType;
     @FXML
-    private TextField txtRechercheCasier;
+    private CheckBox chkLienBrise;
 
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -179,22 +180,51 @@ public class FXMLDocumentController implements Initializable {
 
         // 1. Wrap the ObservableList in a FilteredList (initially display all data).
         FilteredList<Prelevement> filteredData = new FilteredList<>(data, p -> true);
-
-        dateRecherche.setOnKeyReleased(e -> {
-            filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()));
-        });        
-        txtRechercheNom.setOnKeyReleased(e -> {
-            filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()));
+        
+        
+        StringConverter converter = new StringConverter<LocalDate>() {
+            DateTimeFormatter dateFormatter = 
+                DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        }; 
+        dateRecherche.setConverter(converter);
+        dateRecherche.getEditor().textProperty().addListener(e -> {
+                filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()).and(isLienBriseInTable()));
         });
-        txtRechercheType.setOnKeyReleased(e -> {
-            filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()));
+        
+        txtRechercheNom.textProperty().addListener(e -> {
+            filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()).and(isLienBriseInTable()));
         });
+        txtRechercheType.textProperty().addListener(e -> {
+            filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()).and(isLienBriseInTable()));
+        });
+        
+        chkLienBrise.selectedProperty().addListener(e -> {
+            filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()).and(isLienBriseInTable()));
+        });
+        
+        
+        
         // 2. Wrap the FilteredList in a SortedList. 
         sortedData = new SortedList<>(filteredData);
 
         // 3. Bind the SortedList comparator to the TableView comparator.
         sortedData.comparatorProperty().bind(tablePrelevement.comparatorProperty());
-
         // 4. Add sorted (and filtered) data to the table.
         tablePrelevement.setItems(sortedData);
 
@@ -242,11 +272,48 @@ public class FXMLDocumentController implements Initializable {
                 return false;
         };
     }
+    
+    public Predicate<Prelevement> isLienBriseInTable() {
+        return n -> {
+                if (chkLienBrise.isSelected() == false || chkLienBrise == null) {
+                    return true;
+                }
+                
+                File f = new File(n.getChemin());
+                if(f.exists()) {
+                    return false;
+                }
+                
+                return true;
+        };
+    }
 
     @FXML
     public void onButtonAjouterPrelevement() {
         System.out.println("Click on enregistrer");
-        tablePrelevement.getItems().add(new Prelevement(0, datepckAjouterDate.getEditor().getText(), txtfldAjouterNom.getText(), txtfldAjouterType.getText(), txtfldAjouterCasier.getText(), txtfldAjouterCheminComplet.getText()));
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:table_des_matieres.db");
+
+            Statement statement = connection.createStatement();
+            String query = "INSERT INTO ELEMENT(date, nom, type, casier, chemin) VALUES ('" + datepckAjouterDate.getEditor().getText() + "'"
+                    +", '" + MyUtil.toUpperCaseExceptµ(txtfldAjouterNom.getText()) + "'"
+                    + ", '" + MyUtil.toUpperCaseExceptµ(txtfldAjouterType.getText()) + "'"
+                    + ", '" + MyUtil.toUpperCaseExceptµ(txtfldAjouterCasier.getText()) + "'"
+                    + ", '" + MyUtil.toUpperCaseExceptµ(txtfldAjouterCheminComplet.getText()).trim() + "')";
+
+            int ret = statement.executeUpdate(query);
+            ResultSet rs = statement.getGeneratedKeys();
+            
+            data.add(new Prelevement(rs.getInt(1), 
+                    datepckAjouterDate.getEditor().getText(), 
+                    txtfldAjouterNom.getText(), 
+                    txtfldAjouterType.getText(), 
+                    txtfldAjouterCasier.getText(), 
+                    txtfldAjouterCheminComplet.getText()));
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -275,6 +342,8 @@ public class FXMLDocumentController implements Initializable {
                             txtfldAjouterType.getText(),
                             txtfldAjouterCasier.getText(),
                             txtfldAjouterCheminComplet.getText()));
+            
+            tablePrelevement.getSelectionModel().select(indexSelected);
 
         } catch (SQLException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
@@ -297,6 +366,9 @@ public class FXMLDocumentController implements Initializable {
             data.remove(indexSource);
             tablePrelevement.getSelectionModel().clearSelection();
             clearForm();
+            btnAjouterPrelevement.setDisable(false);
+            btnModifierPrelevement.setDisable(true);
+            btnSupprimerPrelevement.setDisable(true);
 
         } catch (SQLException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
@@ -313,7 +385,12 @@ public class FXMLDocumentController implements Initializable {
         clearForm();
 
     }
-
+    
+    @FXML
+    public void onCheckLienBrise() {
+        
+    }
+    
     @FXML
     public void onButtonEffacerFiltre() {
         clearFiltre();
@@ -361,7 +438,7 @@ public class FXMLDocumentController implements Initializable {
         dateRecherche.getEditor().clear();
         txtRechercheNom.clear();
         txtRechercheType.clear();
-        txtRechercheCasier.clear();
+        chkLienBrise.setSelected(false);
     }
 
 }
