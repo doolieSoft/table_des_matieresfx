@@ -31,6 +31,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -42,7 +43,7 @@ import table_des_matieresfx.lib.MyUtil;
 
 /**
  *
- * @author crapast
+ * @author Stefano Crapanzano
  */
 public class FXMLDocumentController implements Initializable {
 
@@ -55,6 +56,9 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private Label statusBar;
+    
+    @FXML
+    private MenuItem menuQuitter;
 
     @FXML
     private TextField txtfldId;
@@ -99,7 +103,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button btnEffacerFiltre;
     @FXML
-    private DatePicker dateRecherche;
+    private TextField dateRecherche;
     @FXML
     private TextField txtRechercheNom;
     @FXML
@@ -117,6 +121,8 @@ public class FXMLDocumentController implements Initializable {
 
         btnModifierPrelevement.setDisable(true);
         btnSupprimerPrelevement.setDisable(true);
+        
+        menuQuitter.setOnAction(null);
 
         id.setCellValueFactory(new PropertyValueFactory<Prelevement, String>("id"));
         date.setCellValueFactory(new PropertyValueFactory<Prelevement, String>("date"));
@@ -188,7 +194,10 @@ public class FXMLDocumentController implements Initializable {
             @Override
             public String toString(LocalDate date) {
                 if (date != null) {
+                    System.out.println(date.toString());
                     return dateFormatter.format(date);
+                    
+                    
                 } else {
                     return "";
                 }
@@ -202,8 +211,9 @@ public class FXMLDocumentController implements Initializable {
                 }
             }
         }; 
-        dateRecherche.setConverter(converter);
-        dateRecherche.getEditor().textProperty().addListener(e -> {
+        
+        
+        dateRecherche.textProperty().addListener(e -> {
                 filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()).and(isLienBriseInTable()));
         });
         
@@ -262,11 +272,11 @@ public class FXMLDocumentController implements Initializable {
     }
     public Predicate<Prelevement> isDateInTable() {
         return n -> {
-                if (dateRecherche.getEditor().getText() == null || dateRecherche.getEditor().getText().isEmpty()) {
+                if (dateRecherche.getText() == null || dateRecherche.getText().isEmpty()) {
                     return true;
                 }
 
-                if(n.getDate().contains(dateRecherche.getEditor().getText())) {
+                if(n.getDate().contains(dateRecherche.getText())) {
                         return true;
                 }
                 return false;
@@ -435,7 +445,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     private void clearFiltre() {
-        dateRecherche.getEditor().clear();
+        dateRecherche.clear();
         txtRechercheNom.clear();
         txtRechercheType.clear();
         chkLienBrise.setSelected(false);

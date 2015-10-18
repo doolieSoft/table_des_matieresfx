@@ -13,7 +13,7 @@ import javafx.beans.property.StringProperty;
 
 /**
  *
- * @author crapast
+ * @author Stefano Crapanzano
  */
 public class Prelevement {
 

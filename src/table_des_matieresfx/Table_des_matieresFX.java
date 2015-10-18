@@ -6,8 +6,6 @@
 package table_des_matieresfx;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,7 +13,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author crapast
+ * @author Stefano Crapanzano
  */
 public class Table_des_matieresFX extends Application {
 
@@ -30,6 +28,7 @@ public class Table_des_matieresFX extends Application {
         stage.setScene(scene);
         stage.show();
     }
+    
 
     /**
      * @param args the command line arguments
