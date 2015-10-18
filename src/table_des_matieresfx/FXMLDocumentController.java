@@ -48,7 +48,7 @@ import table_des_matieresfx.lib.MyUtil;
 public class FXMLDocumentController implements Initializable {
 
     private Connection connection;
-    
+
     private Predicate<Prelevement> predicateNom;
 
     private ObservableList<Prelevement> data;
@@ -56,10 +56,9 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private Label statusBar;
-    
+
     @FXML
     private MenuItem menuQuitter;
-
     @FXML
     private TextField txtfldId;
     @FXML
@@ -72,7 +71,6 @@ public class FXMLDocumentController implements Initializable {
     private TextField txtfldAjouterCasier;
     @FXML
     private TextField txtfldAjouterCheminComplet;
-
     @FXML
     private TableView<Prelevement> tablePrelevement;
     @FXML
@@ -87,10 +85,8 @@ public class FXMLDocumentController implements Initializable {
     private TableColumn<Prelevement, String> casier;
     @FXML
     private TableColumn<Prelevement, String> chemin;
-
     @FXML
     private TitledPane titledPanePrelevement;
-
     @FXML
     private Button btnAjouterPrelevement;
     @FXML
@@ -99,7 +95,6 @@ public class FXMLDocumentController implements Initializable {
     private Button btnSupprimerPrelevement;
     @FXML
     private Button btnNouveauPrelevement;
-
     @FXML
     private Button btnEffacerFiltre;
     @FXML
@@ -111,17 +106,12 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private CheckBox chkLienBrise;
 
-    @FXML
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
         btnModifierPrelevement.setDisable(true);
         btnSupprimerPrelevement.setDisable(true);
-        
+
         menuQuitter.setOnAction(null);
 
         id.setCellValueFactory(new PropertyValueFactory<Prelevement, String>("id"));
@@ -131,7 +121,7 @@ public class FXMLDocumentController implements Initializable {
         casier.setCellValueFactory(new PropertyValueFactory<Prelevement, String>("casier"));
 
         datepckAjouterDate.setConverter(new StringConverter<LocalDate>() {
-            private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
             @Override
             public String toString(LocalDate localDate) {
@@ -186,24 +176,22 @@ public class FXMLDocumentController implements Initializable {
 
         // 1. Wrap the ObservableList in a FilteredList (initially display all data).
         FilteredList<Prelevement> filteredData = new FilteredList<>(data, p -> true);
-                
+
         dateRecherche.textProperty().addListener(e -> {
-                filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()).and(isLienBriseInTable()));
+            filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()).and(isLienBriseInTable()));
         });
-        
+
         txtRechercheNom.textProperty().addListener(e -> {
             filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()).and(isLienBriseInTable()));
         });
         txtRechercheType.textProperty().addListener(e -> {
             filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()).and(isLienBriseInTable()));
         });
-        
+
         chkLienBrise.selectedProperty().addListener(e -> {
             filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()).and(isLienBriseInTable()));
         });
-        
-        
-        
+
         // 2. Wrap the FilteredList in a SortedList. 
         sortedData = new SortedList<>(filteredData);
 
@@ -213,62 +201,60 @@ public class FXMLDocumentController implements Initializable {
         tablePrelevement.setItems(sortedData);
 
     }
-    
+
     public Predicate<Prelevement> isNomInTable() {
         return n -> {
-                if (txtRechercheNom.getText() == null || txtRechercheNom.getText().isEmpty()) {
-                    return true;
-                }
-
-                String[] word = MyUtil.toUpperCaseExceptµ(txtRechercheNom.getText()).split(" ");
-                for (String s : word) {
-                    if (!MyUtil.toUpperCaseExceptµ(n.getNom()).contains(s)) {
-                        return false;
-                    }
-                }
+            if (txtRechercheNom.getText() == null || txtRechercheNom.getText().isEmpty()) {
                 return true;
-        };
-    }
-    public Predicate<Prelevement> isTypeInTable() {
-        return n -> {
-                if (txtRechercheType.getText() == null || txtRechercheType.getText().isEmpty()) {
-                    return true;
-                }
+            }
 
-                String[] word = MyUtil.toUpperCaseExceptµ(txtRechercheType.getText()).split(" ");
-                for (String s : word) {
-                    if (!MyUtil.toUpperCaseExceptµ(n.getType()).contains(s)) {
-                        return false;
-                    }
-                }
-                return true;
-        };
-    }
-    public Predicate<Prelevement> isDateInTable() {
-        return n -> {
-                if (dateRecherche.getText() == null || dateRecherche.getText().isEmpty()) {
-                    return true;
-                }
-
-                if(n.getDate().contains(dateRecherche.getText())) {
-                        return true;
-                }
-                return false;
-        };
-    }
-    
-    public Predicate<Prelevement> isLienBriseInTable() {
-        return n -> {
-                if (chkLienBrise.isSelected() == false || chkLienBrise == null) {
-                    return true;
-                }
-                
-                File f = new File(n.getChemin());
-                if(f.exists()) {
+            String[] word = MyUtil.toUpperCaseExceptµ(txtRechercheNom.getText()).split(" ");
+            for (String s : word) {
+                if (!MyUtil.toUpperCaseExceptµ(n.getNom()).contains(s)) {
                     return false;
                 }
-                
+            }
+            return true;
+        };
+    }
+
+    public Predicate<Prelevement> isTypeInTable() {
+        return n -> {
+            if (txtRechercheType.getText() == null || txtRechercheType.getText().isEmpty()) {
                 return true;
+            }
+
+            String[] word = MyUtil.toUpperCaseExceptµ(txtRechercheType.getText()).split(" ");
+            for (String s : word) {
+                if (!MyUtil.toUpperCaseExceptµ(n.getType()).contains(s)) {
+                    return false;
+                }
+            }
+            return true;
+        };
+    }
+
+    public Predicate<Prelevement> isDateInTable() {
+        return n -> {
+            if (dateRecherche.getText() == null || dateRecherche.getText().isEmpty()) {
+                return true;
+            }
+
+            if (n.getDate().contains(dateRecherche.getText())) {
+                return true;
+            }
+            return false;
+        };
+    }
+
+    public Predicate<Prelevement> isLienBriseInTable() {
+        return n -> {
+            if (chkLienBrise.isSelected() == false || chkLienBrise == null) {
+                return true;
+            }
+
+            File f = new File(n.getChemin());
+            return !f.exists();
         };
     }
 
@@ -280,19 +266,19 @@ public class FXMLDocumentController implements Initializable {
 
             Statement statement = connection.createStatement();
             String query = "INSERT INTO ELEMENT(date, nom, type, casier, chemin) VALUES ('" + datepckAjouterDate.getEditor().getText() + "'"
-                    +", '" + MyUtil.toUpperCaseExceptµ(txtfldAjouterNom.getText()) + "'"
+                    + ", '" + MyUtil.toUpperCaseExceptµ(txtfldAjouterNom.getText()) + "'"
                     + ", '" + MyUtil.toUpperCaseExceptµ(txtfldAjouterType.getText()) + "'"
                     + ", '" + MyUtil.toUpperCaseExceptµ(txtfldAjouterCasier.getText()) + "'"
                     + ", '" + MyUtil.toUpperCaseExceptµ(txtfldAjouterCheminComplet.getText()).trim() + "')";
 
             int ret = statement.executeUpdate(query);
             ResultSet rs = statement.getGeneratedKeys();
-            
-            data.add(new Prelevement(rs.getInt(1), 
-                    datepckAjouterDate.getEditor().getText(), 
-                    txtfldAjouterNom.getText(), 
-                    txtfldAjouterType.getText(), 
-                    txtfldAjouterCasier.getText(), 
+
+            data.add(new Prelevement(rs.getInt(1),
+                    datepckAjouterDate.getEditor().getText(),
+                    txtfldAjouterNom.getText(),
+                    txtfldAjouterType.getText(),
+                    txtfldAjouterCasier.getText(),
                     txtfldAjouterCheminComplet.getText()));
 
         } catch (SQLException ex) {
@@ -326,7 +312,7 @@ public class FXMLDocumentController implements Initializable {
                             txtfldAjouterType.getText(),
                             txtfldAjouterCasier.getText(),
                             txtfldAjouterCheminComplet.getText()));
-            
+
             tablePrelevement.getSelectionModel().select(indexSelected);
 
         } catch (SQLException ex) {
@@ -369,12 +355,7 @@ public class FXMLDocumentController implements Initializable {
         clearForm();
 
     }
-    
-    @FXML
-    public void onCheckLienBrise() {
-        
-    }
-    
+
     @FXML
     public void onButtonEffacerFiltre() {
         clearFiltre();
