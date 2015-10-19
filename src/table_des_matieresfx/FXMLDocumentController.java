@@ -282,6 +282,7 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     public void onButtonNouveauPrelevement() {
+        clearForm();
         titledPanePrelevement.setExpanded(true);
     }
     
