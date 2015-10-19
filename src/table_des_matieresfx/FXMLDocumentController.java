@@ -101,7 +101,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button btnEffacerFiltre;
     @FXML
-    private DatePicker dateRecherche;
+    private TextField dateRecherche;
     @FXML
     private TextField txtRechercheNom;
     @FXML
@@ -204,8 +204,8 @@ public class FXMLDocumentController implements Initializable {
                 }
             }
         }; 
-        dateRecherche.setConverter(converter);
-        dateRecherche.getEditor().textProperty().addListener(e -> {
+       
+        dateRecherche.textProperty().addListener(e -> {
                 filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()).and(isLienBriseInTable()));
         });
         
@@ -264,11 +264,11 @@ public class FXMLDocumentController implements Initializable {
     }
     public Predicate<Prelevement> isDateInTable() {
         return n -> {
-                if (dateRecherche.getEditor().getText() == null || dateRecherche.getEditor().getText().isEmpty()) {
+                if (dateRecherche.getText() == null || dateRecherche.getText().isEmpty()) {
                     return true;
                 }
 
-                if(n.getDate().contains(dateRecherche.getEditor().getText())) {
+                if(n.getDate().contains(dateRecherche.getText())) {
                         return true;
                 }
                 return false;
@@ -282,11 +282,7 @@ public class FXMLDocumentController implements Initializable {
                 }
                 
                 File f = new File(n.getChemin());
-                if(f.exists()) {
-                    return false;
-                }
-                
-                return true;
+                return !f.exists();
         };
     }
     
@@ -450,7 +446,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     private void clearFiltre() {
-        dateRecherche.getEditor().clear();
+        dateRecherche.clear();
         txtRechercheNom.clear();
         txtRechercheType.clear();
         chkLienBrise.setSelected(false);
