@@ -232,6 +232,21 @@ public class FXMLDocumentController implements Initializable {
                 return true;
             }
 
+                String[] word = MyUtil.toUpperCaseExceptµ(txtRechercheNom.getText()).split(" ");
+                for (String s : word) {
+                    if (!MyUtil.toUpperCaseExceptµ(n.getType()).contains(s)) {
+                        return false;
+                    }
+                }
+                return true;
+        };
+    }
+    public Predicate<Prelevement> isTypeInTable() {
+        return n -> {
+            if (txtRechercheType.getText() == null || txtRechercheType.getText().isEmpty()) {
+                return true;
+            }
+
                 String[] word = MyUtil.toUpperCaseExceptµ(txtRechercheType.getText()).split(" ");
                 for (String s : word) {
                     if (!MyUtil.toUpperCaseExceptµ(n.getType()).contains(s)) {

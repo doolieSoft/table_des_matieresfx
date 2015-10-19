@@ -74,7 +74,7 @@
                                   <children>
                                       <HBox prefHeight="45.0" prefWidth="978.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                           <children>
-                                              <DatePicker fx:id="dateRecherche" promptText="Date" />
+                                              <TextField fx:id="dateRecherche" promptText="Date" />
                                               <TextField fx:id="txtRechercheNom" promptText="Nom" />
                                               <TextField fx:id="txtRechercheType" promptText="Type" />
                                               <CheckBox fx:id="chkLienBrise" mnemonicParsing="false" text="Lien brisé" />
