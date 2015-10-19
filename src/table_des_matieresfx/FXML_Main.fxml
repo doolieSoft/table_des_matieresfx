@@ -9,7 +9,7 @@
 <?import table_des_matieresfx.*?>
 <?import javafx.scene.control.cell.*?>
 
-<AnchorPane style="-fx-background-color: #3d88ba;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="table_des_matieresfx.FXMLDocumentController">
+<AnchorPane style="-fx-background-color: #30d9bb;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="table_des_matieresfx.FXMLDocumentController">
     <children>
         <VBox prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -26,28 +26,71 @@
                             </items>
                         </Menu>
                     </menus>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
                 </MenuBar>
-                <TitledPane text="Rechercher">
-                    <content>
-                        <AnchorPane>
-                            <children>
-                                <HBox prefHeight="45.0" prefWidth="978.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <ToolBar style="-fx-background-color: #30d9bb;">
+              <items>
+                <Button defaultButton="true" mnemonicParsing="false" onAction="#onButtonNouveauPrelevement" text="Nouveau prélèvement" />
+                  <Button mnemonicParsing="false" onAction="#onButtonRechercher" text="Rechercher" />
+              </items>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </ToolBar>
+                <Accordion>
+                    <panes>
+                        <TitledPane fx:id="titledPanePrelevement" text="Prélèvement ( Ajout, modif, suppression)">
+                            <content>
+                                <AnchorPane style="-fx-background-color: c89253;">
                                     <children>
-                                        <DatePicker fx:id="dateRecherche" promptText="Date" />
-                                        <TextField fx:id="txtRechercheNom" promptText="Nom" />
-                                        <TextField fx:id="txtRechercheType" promptText="Type" />
-                                        <CheckBox fx:id="chkLienBrise" mnemonicParsing="false" text="Lien brisé" />
-                                        <Button fx:id="btnEffacerFiltre" mnemonicParsing="false" onAction="#onButtonEffacerFiltre" text="Effacer le filtre" />
+                                        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <children>
+                                                <TextField fx:id="txtfldId" editable="false" promptText="Id" VBox.vgrow="NEVER" />
+                                                <DatePicker fx:id="datepckAjouterDate" layoutX="14.0" layoutY="118.0" promptText="Date" />
+                                                <TextField fx:id="txtfldAjouterNom" promptText="Nom" />
+                                                <TextField fx:id="txtfldAjouterType" layoutX="26.0" layoutY="47.0" promptText="Type" />
+                                                <TextField fx:id="txtfldAjouterCasier" layoutX="26.0" layoutY="78.0" promptText="Casier" />
+                                                <TextField fx:id="txtfldAjouterCheminComplet" promptText="Chemin document" />
+                                                <HBox spacing="5.0">
+                                                    <children>
+                                                        <Button fx:id="btnAjouterPrelevement" mnemonicParsing="false" onAction="#onButtonAjouterPrelevement" text="Ajouter" />
+                                                        <Button fx:id="btnModifierPrelevement" mnemonicParsing="false" onAction="#onButtonModifierPrelevement" text="Modifier" />
+                                                        <Button fx:id="btnSupprimerPrelevement" mnemonicParsing="false" onAction="#onButtonSupprimerPrelevement" text="Supprimer" />
+                                                        <Region HBox.hgrow="ALWAYS" />
+                                                        <Button fx:id="btnEffacerFormulaire" mnemonicParsing="false" onAction="#onButtonEffacerFormulaire" text="Effacer le formulaire" />
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
                                     </children>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                                </HBox>
-                            </children>
-                        </AnchorPane>
-                    </content>
-                </TitledPane>
-                <TableView fx:id="tablePrelevement" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+                                </AnchorPane>
+                            </content>
+                        </TitledPane>
+                      <TitledPane fx:id="titledPaneRechercher" text="Rechercher">
+                          <content>
+                              <AnchorPane style="-fx-background-color: #f118e4;">
+                                  <children>
+                                      <HBox prefHeight="45.0" prefWidth="978.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <children>
+                                              <DatePicker fx:id="dateRecherche" promptText="Date" />
+                                              <TextField fx:id="txtRechercheNom" promptText="Nom" />
+                                              <TextField fx:id="txtRechercheType" promptText="Type" />
+                                              <CheckBox fx:id="chkLienBrise" mnemonicParsing="false" text="Lien brisé" />
+                                              <Button fx:id="btnEffacerFiltre" mnemonicParsing="false" onAction="#onButtonEffacerFiltre" text="Effacer le filtre" />
+                                          </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                                      </HBox>
+                                  </children>
+                              </AnchorPane>
+                          </content>
+                      </TitledPane>
+                    </panes>
+                </Accordion>
+                <TableView fx:id="tablePrelevement" onSort="#onButtonRechercher" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="id" prefWidth="75.0" text="Id" visible="false" />
                         <TableColumn fx:id="date" prefWidth="75.0" text="Date">
@@ -73,37 +116,6 @@
                         <TableColumn fx:id="chemin" prefWidth="75.0" text="Chemin" visible="false" />
                     </columns>
                 </TableView>
-                <Accordion>
-                    <panes>
-                        <TitledPane fx:id="titledPanePrelevement" text="Prélèvement">
-                            <content>
-                                <AnchorPane>
-                                    <children>
-                                        <VBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                            <children>
-                                                <TextField fx:id="txtfldId" editable="false" promptText="Id" VBox.vgrow="NEVER" />
-                                                <DatePicker fx:id="datepckAjouterDate" layoutX="14.0" layoutY="118.0" promptText="Date" />
-                                                <TextField fx:id="txtfldAjouterNom" promptText="Nom" />
-                                                <TextField fx:id="txtfldAjouterType" layoutX="26.0" layoutY="47.0" promptText="Type" />
-                                                <TextField fx:id="txtfldAjouterCasier" layoutX="26.0" layoutY="78.0" promptText="Casier" />
-                                                <TextField fx:id="txtfldAjouterCheminComplet" promptText="Chemin document" />
-                                                <HBox spacing="5.0">
-                                                    <children>
-                                                        <Button fx:id="btnAjouterPrelevement" mnemonicParsing="false" onAction="#onButtonAjouterPrelevement" text="Ajouter" />
-                                                        <Button fx:id="btnModifierPrelevement" mnemonicParsing="false" onAction="#onButtonModifierPrelevement" text="Modifier" />
-                                                        <Button fx:id="btnSupprimerPrelevement" mnemonicParsing="false" onAction="#onButtonSupprimerPrelevement" text="Supprimer" />
-                                                        <Region HBox.hgrow="ALWAYS" />
-                                                        <Button fx:id="btnNouveauPrelevement" mnemonicParsing="false" onAction="#onButtonNouveauPrelevement" text="Nouveau prélèvement" />
-                                                    </children>
-                                                </HBox>
-                                            </children>
-                                        </VBox>
-                                    </children>
-                                </AnchorPane>
-                            </content>
-                        </TitledPane>
-                    </panes>
-                </Accordion>
             </children>
         </VBox>
     </children>
