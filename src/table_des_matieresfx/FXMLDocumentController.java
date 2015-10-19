@@ -398,11 +398,6 @@ public class FXMLDocumentController implements Initializable {
     }
     
     @FXML
-    public void onCheckLienBrise() {
-        
-    }
-    
-    @FXML
     public void onButtonEffacerFiltre() {
         clearFiltre();
     }
