@@ -17,7 +17,7 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="Application">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Quitter" />
+                                <MenuItem fx:id="menuQuitter" mnemonicParsing="false" text="Quitter" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Help">
