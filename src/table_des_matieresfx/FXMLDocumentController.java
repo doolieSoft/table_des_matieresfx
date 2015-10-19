@@ -86,6 +86,8 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private TitledPane titledPanePrelevement;
+    @FXML
+    private TitledPane titledPaneRechercher;
 
     @FXML
     private Button btnAjouterPrelevement;
@@ -94,7 +96,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button btnSupprimerPrelevement;
     @FXML
-    private Button btnNouveauPrelevement;
+    private Button btnEffacerFormulaire;
 
     @FXML
     private Button btnEffacerFiltre;
@@ -287,7 +289,16 @@ public class FXMLDocumentController implements Initializable {
                 return true;
         };
     }
-
+    
+    @FXML
+    public void onButtonNouveauPrelevement() {
+        titledPanePrelevement.setExpanded(true);
+    }
+    
+    @FXML
+    public void onButtonRechercher() {
+        titledPaneRechercher.setExpanded(true);
+    }
     @FXML
     public void onButtonAjouterPrelevement() {
         System.out.println("Click on enregistrer");
@@ -310,6 +321,10 @@ public class FXMLDocumentController implements Initializable {
                     txtfldAjouterType.getText(), 
                     txtfldAjouterCasier.getText(), 
                     txtfldAjouterCheminComplet.getText()));
+            
+            tablePrelevement.getSelectionModel().selectLast();
+            tablePrelevement.scrollTo(tablePrelevement.getSelectionModel().getSelectedIndex());
+            tablePrelevement.requestFocus();
 
         } catch (SQLException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
@@ -376,7 +391,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
-    public void onButtonNouveauPrelevement() {
+    public void onButtonEffacerFormulaire() {
 
         btnAjouterPrelevement.setDisable(false);
         btnModifierPrelevement.setDisable(true);
