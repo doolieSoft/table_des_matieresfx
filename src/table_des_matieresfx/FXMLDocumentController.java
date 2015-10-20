@@ -296,7 +296,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     public void onButtonAjouterPrelevement() {
-        System.out.println("Click on enregistrer");
+
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:table_des_matieres.db");
 
