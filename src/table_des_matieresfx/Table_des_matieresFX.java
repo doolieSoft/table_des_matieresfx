@@ -23,17 +23,16 @@ public class Table_des_matieresFX extends Application {
 
         Scene scene = new Scene(root);
         setUserAgentStylesheet(STYLESHEET_CASPIAN);
-        
+
         stage.setTitle("Table des matieres FX");
         stage.setScene(scene);
         stage.show();
     }
-    
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         launch(args);
     }
-
 }

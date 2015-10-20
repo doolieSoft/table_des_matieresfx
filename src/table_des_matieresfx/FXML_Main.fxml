@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.effect.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
@@ -11,41 +12,26 @@
 
 <AnchorPane style="-fx-background-color: #30d9bb;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="table_des_matieresfx.FXMLDocumentController">
     <children>
-        <VBox prefHeight="703.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox prefHeight="479.0" prefWidth="673.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <MenuBar>
-                    <menus>
-                        <Menu mnemonicParsing="false" text="Application">
-                            <items>
-                                <MenuItem fx:id="menuQuitter" mnemonicParsing="false" text="Quitter" />
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Help">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="About" />
-                            </items>
-                        </Menu>
-                    </menus>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-                </MenuBar>
-            <ToolBar style="-fx-background-color: #30d9bb;">
-              <items>
-                <Button defaultButton="true" mnemonicParsing="false" onAction="#onButtonNouveauPrelevement" text="Nouveau prélèvement" />
+            <HBox spacing="5.0">
+               <children>
+                  <Button defaultButton="true" mnemonicParsing="false" onAction="#onButtonNouveauPrelevement" text="Nouveau prélèvement" />
                   <Button mnemonicParsing="false" onAction="#onButtonRechercher" text="Rechercher" />
-              </items>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="btnQuitter" mnemonicParsing="false" text="Quitter" />
+               </children>
                <VBox.margin>
-                  <Insets bottom="5.0" />
+                  <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
                </VBox.margin>
-            </ToolBar>
+            </HBox>
                 <Accordion>
                     <panes>
-                        <TitledPane fx:id="titledPanePrelevement" text="Prélèvement ( Ajout, modif, suppression)">
+                        <TitledPane fx:id="titledPanePrelevement" text="Prélèvement (Ajout, modif, suppression)">
                             <content>
                                 <AnchorPane style="-fx-background-color: c89253;">
                                     <children>
-                                        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                        <VBox spacing="2.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <children>
                                     <HBox>
                                        <children>
@@ -63,13 +49,22 @@
                                                         <Button fx:id="btnAjouterPrelevement" mnemonicParsing="false" onAction="#onButtonAjouterPrelevement" text="Ajouter" />
                                                         <Button fx:id="btnModifierPrelevement" mnemonicParsing="false" onAction="#onButtonModifierPrelevement" text="Modifier" />
                                                         <Button fx:id="btnSupprimerPrelevement" mnemonicParsing="false" onAction="#onButtonSupprimerPrelevement" text="Supprimer" />
-                                                        <Region HBox.hgrow="ALWAYS" />
+                                                        <Region HBox.hgrow="ALWAYS">
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin></Region>
                                                         <Button fx:id="btnEffacerFormulaire" mnemonicParsing="false" onAction="#onButtonEffacerFormulaire" text="Effacer le formulaire" />
                                                     </children>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
                                                 </HBox>
                                             </children>
                                         </VBox>
                                     </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
                                 </AnchorPane>
                             </content>
                         </TitledPane>
@@ -77,7 +72,7 @@
                           <content>
                               <AnchorPane style="-fx-background-color: #f118e4;">
                                   <children>
-                                      <HBox prefHeight="45.0" prefWidth="978.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <HBox fillHeight="false" spacing="5.0">
                                           <children>
                                               <TextField fx:id="dateRecherche" promptText="Date" />
                                               <TextField fx:id="txtRechercheNom" promptText="Nom" />
@@ -94,6 +89,9 @@
                           </content>
                       </TitledPane>
                     </panes>
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </VBox.margin>
                 </Accordion>
                 <TableView fx:id="tablePrelevement" onSort="#onButtonRechercher" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                     <columns>
@@ -120,8 +118,14 @@
                         </TableColumn>
                         <TableColumn fx:id="chemin" prefWidth="75.0" text="Chemin" visible="false" />
                     </columns>
+               <VBox.margin>
+                  <Insets bottom="1.0" left="5.0" right="5.0" />
+               </VBox.margin>
                 </TableView>
             </children>
         </VBox>
     </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
 </AnchorPane>

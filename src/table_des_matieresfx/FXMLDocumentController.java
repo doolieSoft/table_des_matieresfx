@@ -6,6 +6,7 @@
 package table_des_matieresfx;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,14 +21,19 @@ import java.util.ResourceBundle;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -37,6 +43,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import table_des_matieresfx.lib.MyUtil;
 
@@ -55,8 +64,6 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private Label statusBar;
-    @FXML
-    private MenuItem menuQuitter;
     @FXML
     private Label labelId;
     @FXML
@@ -89,6 +96,8 @@ public class FXMLDocumentController implements Initializable {
     private TitledPane titledPaneRechercher;
 
     @FXML
+    private Button btnQuitter;
+    @FXML
     private Button btnAjouterPrelevement;
     @FXML
     private Button btnModifierPrelevement;
@@ -111,10 +120,12 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+        ImageView iv = new ImageView(getClass().getResource("images/bullet_deny.png").toExternalForm());
+
+        btnQuitter.setContentDisplay(ContentDisplay.TOP);
+
         btnModifierPrelevement.setDisable(true);
         btnSupprimerPrelevement.setDisable(true);
-
-        menuQuitter.setOnAction(null);
 
         id.setCellValueFactory(new PropertyValueFactory<Prelevement, String>("id"));
         date.setCellValueFactory(new PropertyValueFactory<Prelevement, String>("date"));
@@ -172,8 +183,9 @@ public class FXMLDocumentController implements Initializable {
             data = getInitialPrelevementData();
 
             tablePrelevement.getItems().setAll(data);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.printf(FXMLDocumentController.class.getName().toString() + " " + ex.getLocalizedMessage());
         }
 
         // 1. Wrap the ObservableList in a FilteredList (initially display all data).
@@ -297,10 +309,11 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     public void onButtonAjouterPrelevement() {
 
+        Statement statement = null;
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:table_des_matieres.db");
 
-            Statement statement = connection.createStatement();
+            statement = connection.createStatement();
             String query = "INSERT INTO ELEMENT(date, nom, type, casier, chemin) VALUES ('" + datepckAjouterDate.getEditor().getText() + "'"
                     + ", '" + MyUtil.toUpperCaseExceptµ(txtfldAjouterNom.getText()) + "'"
                     + ", '" + MyUtil.toUpperCaseExceptµ(txtfldAjouterType.getText()) + "'"
@@ -323,6 +336,15 @@ public class FXMLDocumentController implements Initializable {
 
         } catch (SQLException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.printf(FXMLDocumentController.class.getName().toString() + " " + ex.getLocalizedMessage());
+        } finally {
+            //try { rs.close(); } catch (Exception e) { /* ignored */ }
+            try {
+                statement.close();
+            } catch (Exception e) { /* ignored */ }
+            try {
+                connection.close();
+            } catch (Exception e) { /* ignored */ }
         }
 
     }
@@ -330,10 +352,11 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     public void onButtonModifierPrelevement() {
 
+        Statement statement = null;
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:table_des_matieres.db");
 
-            Statement statement = connection.createStatement();
+            statement = connection.createStatement();
             String query = "UPDATE ELEMENT SET DATE='" + datepckAjouterDate.getEditor().getText() + "'"
                     + ", NOM='" + MyUtil.toUpperCaseExceptµ(txtfldAjouterNom.getText()) + "'"
                     + ", TYPE='" + MyUtil.toUpperCaseExceptµ(txtfldAjouterType.getText()) + "'"
@@ -356,15 +379,25 @@ public class FXMLDocumentController implements Initializable {
 
         } catch (SQLException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.printf(FXMLDocumentController.class.getName().toString() + " " + ex.getLocalizedMessage());
+        } finally {
+            //try { rs.close(); } catch (Exception e) { /* ignored */ }
+            try {
+                statement.close();
+            } catch (Exception e) { /* ignored */ }
+            try {
+                connection.close();
+            } catch (Exception e) { /* ignored */ }
         }
     }
 
     @FXML
     public void onButtonSupprimerPrelevement() {
+        Statement statement = null;
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:table_des_matieres.db");
 
-            Statement statement = connection.createStatement();
+            statement = connection.createStatement();
             String query = "DELETE FROM ELEMENT "
                     + " WHERE ELEMENT_ID=" + labelId.getText();
 
@@ -380,6 +413,15 @@ public class FXMLDocumentController implements Initializable {
 
         } catch (SQLException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.printf(FXMLDocumentController.class.getName().toString() + " " + ex.getLocalizedMessage());
+        } finally {
+            //try { rs.close(); } catch (Exception e) { /* ignored */ }
+            try {
+                statement.close();
+            } catch (Exception e) { /* ignored */ }
+            try {
+                connection.close();
+            } catch (Exception e) { /* ignored */ }
         }
     }
 
@@ -391,11 +433,6 @@ public class FXMLDocumentController implements Initializable {
         btnSupprimerPrelevement.setDisable(true);
 
         clearForm();
-
-    }
-
-    @FXML
-    public void onCheckLienBrise() {
 
     }
 
@@ -423,7 +460,7 @@ public class FXMLDocumentController implements Initializable {
             }
 
             rs.close();
-        } catch (SQLException e) {
+        } catch (SQLException ex) {
             statement.executeUpdate("CREATE TABLE ELEMENT (CHEMIN TEXT, ELEMENT_ID INTEGER PRIMARY KEY, NOM TEXT, DATE TEXT, TYPE TEXT, CASIER TEXT);");
             connection.close();
         }
