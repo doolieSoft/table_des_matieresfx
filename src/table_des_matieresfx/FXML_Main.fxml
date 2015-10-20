@@ -11,7 +11,7 @@
 
 <AnchorPane style="-fx-background-color: #30d9bb;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="table_des_matieresfx.FXMLDocumentController">
     <children>
-        <VBox prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox prefHeight="703.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <MenuBar>
                     <menus>
@@ -47,7 +47,12 @@
                                     <children>
                                         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <children>
-                                                <TextField fx:id="txtfldId" editable="false" promptText="Id" VBox.vgrow="NEVER" />
+                                    <HBox>
+                                       <children>
+                                          <Label text="Id : " />
+                                          <Label fx:id="labelId" />
+                                       </children>
+                                    </HBox>
                                                 <DatePicker fx:id="datepckAjouterDate" layoutX="14.0" layoutY="118.0" promptText="Date" />
                                                 <TextField fx:id="txtfldAjouterNom" promptText="Nom" />
                                                 <TextField fx:id="txtfldAjouterType" layoutX="26.0" layoutY="47.0" promptText="Type" />

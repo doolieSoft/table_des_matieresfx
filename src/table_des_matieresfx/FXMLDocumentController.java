@@ -58,7 +58,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private MenuItem menuQuitter;
     @FXML
-    private TextField txtfldId;
+    private Label labelId;
     @FXML
     private DatePicker datepckAjouterDate;
     @FXML
@@ -154,7 +154,7 @@ public class FXMLDocumentController implements Initializable {
                     btnSupprimerPrelevement.setDisable(false);
 
                     Prelevement rowData = row.getItem();
-                    txtfldId.setText(Integer.toString(rowData.getId()));
+                    labelId.setText(Integer.toString(rowData.getId()));
                     datepckAjouterDate.getEditor().setText(rowData.getDate());
                     txtfldAjouterNom.setText(rowData.getNom());
                     txtfldAjouterType.setText(rowData.getType());
@@ -178,11 +178,11 @@ public class FXMLDocumentController implements Initializable {
 
         // 1. Wrap the ObservableList in a FilteredList (initially display all data).
         FilteredList<Prelevement> filteredData = new FilteredList<>(data, p -> true);
-        
-        
+
         StringConverter converter = new StringConverter<LocalDate>() {
-            DateTimeFormatter dateFormatter = 
-                DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            DateTimeFormatter dateFormatter
+                    = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+
             @Override
             public String toString(LocalDate date) {
                 if (date != null) {
@@ -191,6 +191,7 @@ public class FXMLDocumentController implements Initializable {
                     return "";
                 }
             }
+
             @Override
             public LocalDate fromString(String string) {
                 if (string != null && !string.isEmpty()) {
@@ -199,10 +200,10 @@ public class FXMLDocumentController implements Initializable {
                     return null;
                 }
             }
-        }; 
-       
+        };
+
         dateRecherche.textProperty().addListener(e -> {
-                filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()).and(isLienBriseInTable()));
+            filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()).and(isLienBriseInTable()));
         });
 
         txtRechercheNom.textProperty().addListener(e -> {
@@ -216,7 +217,7 @@ public class FXMLDocumentController implements Initializable {
             filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()).and(isLienBriseInTable()));
         });
 
-        // 2. Wrap the FilteredList in a SortedList. 
+        // 2. Wrap the FilteredList in a SortedList.
         sortedData = new SortedList<>(filteredData);
 
         // 3. Bind the SortedList comparator to the TableView comparator.
@@ -232,64 +233,67 @@ public class FXMLDocumentController implements Initializable {
                 return true;
             }
 
-                String[] word = MyUtil.toUpperCaseExceptµ(txtRechercheNom.getText()).split(" ");
-                for (String s : word) {
-                    if (!MyUtil.toUpperCaseExceptµ(n.getType()).contains(s)) {
-                        return false;
-                    }
+            String[] word = MyUtil.toUpperCaseExceptµ(txtRechercheNom.getText()).split(" ");
+            for (String s : word) {
+                if (!MyUtil.toUpperCaseExceptµ(n.getType()).contains(s)) {
+                    return false;
                 }
-                return true;
+            }
+            return true;
         };
     }
+
     public Predicate<Prelevement> isTypeInTable() {
         return n -> {
             if (txtRechercheType.getText() == null || txtRechercheType.getText().isEmpty()) {
                 return true;
             }
 
-                String[] word = MyUtil.toUpperCaseExceptµ(txtRechercheType.getText()).split(" ");
-                for (String s : word) {
-                    if (!MyUtil.toUpperCaseExceptµ(n.getType()).contains(s)) {
-                        return false;
-                    }
+            String[] word = MyUtil.toUpperCaseExceptµ(txtRechercheType.getText()).split(" ");
+            for (String s : word) {
+                if (!MyUtil.toUpperCaseExceptµ(n.getType()).contains(s)) {
+                    return false;
                 }
-                return true;
+            }
+            return true;
         };
     }
+
     public Predicate<Prelevement> isDateInTable() {
         return n -> {
-                if (dateRecherche.getText() == null || dateRecherche.getText().isEmpty()) {
-                    return true;
-                }
+            if (dateRecherche.getText() == null || dateRecherche.getText().isEmpty()) {
+                return true;
+            }
 
-                if(n.getDate().contains(dateRecherche.getText())) {
-                        return true;
-                }
-                return false;
+            if (n.getDate().contains(dateRecherche.getText())) {
+                return true;
+            }
+            return false;
         };
     }
-    
+
     public Predicate<Prelevement> isLienBriseInTable() {
         return n -> {
-                if (chkLienBrise.isSelected() == false || chkLienBrise == null) {
-                    return true;
-                }
-                
-                File f = new File(n.getChemin());
-                return !f.exists();
+            if (chkLienBrise.isSelected() == false || chkLienBrise == null) {
+                return true;
+            }
+
+            File f = new File(n.getChemin());
+            return !f.exists();
         };
     }
-    
+
     @FXML
     public void onButtonNouveauPrelevement() {
         clearForm();
         titledPanePrelevement.setExpanded(true);
     }
-    
+
     @FXML
     public void onButtonRechercher() {
         titledPaneRechercher.setExpanded(true);
     }
+
     @FXML
     public void onButtonAjouterPrelevement() {
         System.out.println("Click on enregistrer");
@@ -312,7 +316,7 @@ public class FXMLDocumentController implements Initializable {
                     txtfldAjouterType.getText(),
                     txtfldAjouterCasier.getText(),
                     txtfldAjouterCheminComplet.getText()));
-            
+
             tablePrelevement.getSelectionModel().selectLast();
             tablePrelevement.scrollTo(tablePrelevement.getSelectionModel().getSelectedIndex());
             tablePrelevement.requestFocus();
@@ -335,19 +339,18 @@ public class FXMLDocumentController implements Initializable {
                     + ", TYPE='" + MyUtil.toUpperCaseExceptµ(txtfldAjouterType.getText()) + "'"
                     + ", CASIER='" + MyUtil.toUpperCaseExceptµ(txtfldAjouterCasier.getText()) + "' "
                     + ", CHEMIN='" + MyUtil.toUpperCaseExceptµ(txtfldAjouterCheminComplet.getText()).trim() + "' "
-                    + " WHERE ELEMENT_ID=" + txtfldId.getText();
+                    + " WHERE ELEMENT_ID=" + labelId.getText();
 
             int ret = statement.executeUpdate(query);
 
             int indexSelected = tablePrelevement.getSelectionModel().getSelectedIndex();
-            int indexSource = sortedData.getSourceIndexFor(data, indexSelected);
-            data.set(indexSource,
-                    new Prelevement(Integer.valueOf(txtfldId.getText()),
+            data.set(indexSelected,
+                    new Prelevement(Integer.valueOf(labelId.getText()),
                             datepckAjouterDate.getEditor().getText(),
-                            txtfldAjouterNom.getText(),
-                            txtfldAjouterType.getText(),
-                            txtfldAjouterCasier.getText(),
-                            txtfldAjouterCheminComplet.getText()));
+                            MyUtil.toUpperCaseExceptµ(txtfldAjouterNom.getText()),
+                            MyUtil.toUpperCaseExceptµ(txtfldAjouterType.getText()),
+                            MyUtil.toUpperCaseExceptµ(txtfldAjouterCasier.getText()),
+                            MyUtil.toUpperCaseExceptµ(txtfldAjouterCheminComplet.getText())));
 
             tablePrelevement.getSelectionModel().select(indexSelected);
 
@@ -363,13 +366,12 @@ public class FXMLDocumentController implements Initializable {
 
             Statement statement = connection.createStatement();
             String query = "DELETE FROM ELEMENT "
-                    + " WHERE ELEMENT_ID=" + txtfldId.getText();
+                    + " WHERE ELEMENT_ID=" + labelId.getText();
 
             int ret = statement.executeUpdate(query);
 
             int indexSelected = tablePrelevement.getSelectionModel().getSelectedIndex();
-            int indexSource = sortedData.getSourceIndexFor(data, indexSelected);
-            data.remove(indexSource);
+            data.remove(indexSelected);
             tablePrelevement.getSelectionModel().clearSelection();
             clearForm();
             btnAjouterPrelevement.setDisable(false);
@@ -391,12 +393,12 @@ public class FXMLDocumentController implements Initializable {
         clearForm();
 
     }
-    
+
     @FXML
     public void onCheckLienBrise() {
 
     }
-    
+
     @FXML
     public void onButtonEffacerFiltre() {
         clearFiltre();
@@ -432,7 +434,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     private void clearForm() {
-        txtfldId.clear();
+        labelId.setText("");
         txtfldAjouterNom.clear();
         txtfldAjouterCasier.clear();
         txtfldAjouterCheminComplet.clear();
