@@ -482,6 +482,10 @@ public class FXMLDocumentController implements Initializable {
         txtfldAjouterCheminComplet.clear();
         txtfldAjouterType.clear();
         datepckAjouterDate.getEditor().clear();
+
+        btnAjouterPrelevement.setDisable(false);
+        btnModifierPrelevement.setDisable(true);
+        btnSupprimerPrelevement.setDisable(true);
     }
 
     private void clearFiltre() {
