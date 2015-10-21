@@ -291,6 +291,7 @@ public class FXMLDocumentController implements Initializable {
     public void onButtonAjouterPrelevement() {
 
         Statement statement = null;
+        ResultSet rs = null;
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:table_des_matieres.db");
 
@@ -302,7 +303,7 @@ public class FXMLDocumentController implements Initializable {
                     + ", '" + MyUtil.toUpperCaseExceptµ(txtfldAjouterCheminComplet.getText()).trim() + "')";
 
             int ret = statement.executeUpdate(query);
-            ResultSet rs = statement.getGeneratedKeys();
+            rs = statement.getGeneratedKeys();
 
             data.add(new Prelevement(rs.getInt(1),
                     datepckAjouterDate.getEditor().getText(),
@@ -319,7 +320,9 @@ public class FXMLDocumentController implements Initializable {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
             System.out.printf(FXMLDocumentController.class.getName() + " " + ex.getLocalizedMessage());
         } finally {
-            //try { rs.close(); } catch (Exception e) { /* ignored */ }
+            try {
+                rs.close();
+            } catch (Exception e) { /* ignored */ }
             try {
                 statement.close();
             } catch (Exception e) { /* ignored */ }
