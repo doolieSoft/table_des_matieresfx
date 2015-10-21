@@ -214,7 +214,7 @@ public class FXMLDocumentController implements Initializable {
 
             String[] word = MyUtil.toUpperCaseExceptµ(txtRechercheNom.getText()).split(" ");
             for (String s : word) {
-                if (!MyUtil.toUpperCaseExceptµ(n.getType()).contains(s)) {
+                if (!MyUtil.toUpperCaseExceptµ(n.getNom()).contains(s)) {
                     return false;
                 }
             }
