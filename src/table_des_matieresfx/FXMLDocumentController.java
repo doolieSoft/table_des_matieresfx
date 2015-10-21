@@ -6,7 +6,6 @@
 package table_des_matieresfx;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,31 +20,24 @@ import java.util.ResourceBundle;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import table_des_matieresfx.lib.MyUtil;
 
@@ -57,13 +49,9 @@ public class FXMLDocumentController implements Initializable {
 
     private Connection connection;
 
-    private Predicate<Prelevement> predicateNom;
-
     private ObservableList<Prelevement> data;
     SortedList<Prelevement> sortedData;
 
-    @FXML
-    private Label statusBar;
     @FXML
     private Label labelId;
     @FXML
@@ -103,11 +91,7 @@ public class FXMLDocumentController implements Initializable {
     private Button btnModifierPrelevement;
     @FXML
     private Button btnSupprimerPrelevement;
-    @FXML
-    private Button btnEffacerFormulaire;
 
-    @FXML
-    private Button btnEffacerFiltre;
     @FXML
     private TextField dateRecherche;
     @FXML
@@ -185,7 +169,7 @@ public class FXMLDocumentController implements Initializable {
             tablePrelevement.getItems().setAll(data);
         } catch (SQLException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.printf(FXMLDocumentController.class.getName().toString() + " " + ex.getLocalizedMessage());
+            System.out.printf(FXMLDocumentController.class.getName() + " " + ex.getLocalizedMessage());
         }
 
         // 1. Wrap the ObservableList in a FilteredList (initially display all data).
@@ -277,10 +261,7 @@ public class FXMLDocumentController implements Initializable {
                 return true;
             }
 
-            if (n.getDate().contains(dateRecherche.getText())) {
-                return true;
-            }
-            return false;
+            return n.getDate().contains(dateRecherche.getText());
         };
     }
 
@@ -336,7 +317,7 @@ public class FXMLDocumentController implements Initializable {
 
         } catch (SQLException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.printf(FXMLDocumentController.class.getName().toString() + " " + ex.getLocalizedMessage());
+            System.out.printf(FXMLDocumentController.class.getName() + " " + ex.getLocalizedMessage());
         } finally {
             //try { rs.close(); } catch (Exception e) { /* ignored */ }
             try {
@@ -379,7 +360,7 @@ public class FXMLDocumentController implements Initializable {
 
         } catch (SQLException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.printf(FXMLDocumentController.class.getName().toString() + " " + ex.getLocalizedMessage());
+            System.out.printf(FXMLDocumentController.class.getName() + " " + ex.getLocalizedMessage());
         } finally {
             //try { rs.close(); } catch (Exception e) { /* ignored */ }
             try {
@@ -413,7 +394,7 @@ public class FXMLDocumentController implements Initializable {
 
         } catch (SQLException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.printf(FXMLDocumentController.class.getName().toString() + " " + ex.getLocalizedMessage());
+            System.out.printf(FXMLDocumentController.class.getName() + " " + ex.getLocalizedMessage());
         } finally {
             //try { rs.close(); } catch (Exception e) { /* ignored */ }
             try {
@@ -463,8 +444,17 @@ public class FXMLDocumentController implements Initializable {
         } catch (SQLException ex) {
             statement.executeUpdate("CREATE TABLE ELEMENT (CHEMIN TEXT, ELEMENT_ID INTEGER PRIMARY KEY, NOM TEXT, DATE TEXT, TYPE TEXT, CASIER TEXT);");
             connection.close();
+        } finally {
+            try {
+                rs.close();
+            } catch (Exception e) { /* ignored */ }
+            try {
+                statement.close();
+            } catch (Exception e) { /* ignored */ }
+            try {
+                connection.close();
+            } catch (Exception e) { /* ignored */ }
         }
-        connection.close();
 
         data = FXCollections.observableList(prelevements);
         return data;
