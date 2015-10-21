@@ -39,6 +39,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.StringConverter;
 import table_des_matieresfx.lib.MyUtil;
 
@@ -53,6 +56,8 @@ public class FXMLDocumentController implements Initializable {
     private ObservableList<Prelevement> data;
     SortedList<Prelevement> sortedData;
 
+    @FXML
+    private AnchorPane principalPane;
     @FXML
     private Label labelId;
     @FXML
@@ -401,6 +406,30 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     public void onButtonEffacerFiltre() {
         clearFiltre();
+    }
+
+    @FXML
+    public void onButtonSelectionnerFichier() {
+        FileChooser browse = new FileChooser();
+        browse.setTitle("Sélectionner le fichier du prélèvement ...");
+
+        browse.getExtensionFilters().addAll(
+                new ExtensionFilter("Word Files", "*.doc", "*.docx"),
+                new ExtensionFilter("PDF Files", "*.pdf"),
+                new ExtensionFilter("Text Files", "*.txt"),
+                new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
+                new ExtensionFilter("All Files", "*.*"));
+
+        File selectedFile = browse.showOpenDialog(principalPane.getScene().getWindow());
+
+        if (selectedFile != null) {
+            txtfldAjouterCheminComplet.setText(selectedFile.getAbsolutePath());
+        }
+    }
+
+    @FXML
+    public void onButtonOuvrir() {
+
     }
 
     @FXML

@@ -10,7 +10,7 @@
 <?import table_des_matieresfx.*?>
 <?import javafx.scene.control.cell.*?>
 
-<AnchorPane style="-fx-background-color: #30d9bb;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="table_des_matieresfx.FXMLDocumentController">
+<AnchorPane fx:id="principalPane" style="-fx-background-color: #30d9bb;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="table_des_matieresfx.FXMLDocumentController">
     <children>
         <VBox prefHeight="679.0" prefWidth="673.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -43,7 +43,13 @@
                                                 <TextField fx:id="txtfldAjouterNom" promptText="Nom" />
                                                 <TextField fx:id="txtfldAjouterType" layoutX="26.0" layoutY="47.0" promptText="Type" />
                                                 <TextField fx:id="txtfldAjouterCasier" layoutX="26.0" layoutY="78.0" promptText="Casier" />
-                                                <TextField fx:id="txtfldAjouterCheminComplet" promptText="Chemin document" />
+                                    <HBox spacing="5.0">
+                                       <children>
+                                                      <TextField fx:id="txtfldAjouterCheminComplet" promptText="Chemin document" HBox.hgrow="ALWAYS" />
+                                          <Button mnemonicParsing="false" onAction="#onButtonSelectionnerFichier" text="Sélectionner le fichier..." />
+                                          <Button mnemonicParsing="false" text="Ouvrir" />
+                                       </children>
+                                    </HBox>
                                                 <HBox spacing="5.0">
                                                     <children>
                                                         <Button fx:id="btnAjouterPrelevement" mnemonicParsing="false" onAction="#onButtonAjouterPrelevement" text="Ajouter" />
