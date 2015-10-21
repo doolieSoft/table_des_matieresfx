@@ -175,29 +175,6 @@ public class FXMLDocumentController implements Initializable {
         // 1. Wrap the ObservableList in a FilteredList (initially display all data).
         FilteredList<Prelevement> filteredData = new FilteredList<>(data, p -> true);
 
-        StringConverter converter = new StringConverter<LocalDate>() {
-            DateTimeFormatter dateFormatter
-                    = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-
-            @Override
-            public String toString(LocalDate date) {
-                if (date != null) {
-                    return dateFormatter.format(date);
-                } else {
-                    return "";
-                }
-            }
-
-            @Override
-            public LocalDate fromString(String string) {
-                if (string != null && !string.isEmpty()) {
-                    return LocalDate.parse(string, dateFormatter);
-                } else {
-                    return null;
-                }
-            }
-        };
-
         dateRecherche.textProperty().addListener(e -> {
             filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()).and(isLienBriseInTable()));
         });
