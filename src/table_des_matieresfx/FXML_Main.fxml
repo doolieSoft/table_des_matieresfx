@@ -16,10 +16,24 @@
             <children>
             <HBox spacing="5.0">
                <children>
-                  <Button defaultButton="true" mnemonicParsing="false" onAction="#onButtonNouveauPrelevement" text="Nouveau prélèvement" />
+                  <Button alignment="TOP_LEFT" defaultButton="true" mnemonicParsing="false" onAction="#onButtonNouveauPrelevement" text="Nouveau prélèvement">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/1445538869_edit.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
                   <Button mnemonicParsing="false" onAction="#onButtonRechercher" text="Rechercher" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <Button fx:id="btnQuitter" mnemonicParsing="false" onAction="#onButtonQuitter" text="Quitter" />
+                  <Button fx:id="btnQuitter" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#onButtonQuitter" text="Quitter">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/1445538862_lock_locked.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
                </children>
                <VBox.margin>
                   <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
