@@ -112,8 +112,6 @@ public class FXMLDocumentController implements Initializable {
 
         ImageView iv = new ImageView(getClass().getResource("images/bullet_deny.png").toExternalForm());
 
-        btnQuitter.setContentDisplay(ContentDisplay.TOP);
-
         btnModifierPrelevement.setDisable(true);
         btnSupprimerPrelevement.setDisable(true);
 

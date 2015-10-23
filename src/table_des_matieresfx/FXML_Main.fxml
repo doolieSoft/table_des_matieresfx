@@ -12,33 +12,42 @@
 
 <AnchorPane fx:id="principalPane" style="-fx-background-color: #30d9bb;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="table_des_matieresfx.FXMLDocumentController">
     <children>
-        <VBox prefHeight="679.0" prefWidth="673.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox prefHeight="494.0" prefWidth="673.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-            <HBox spacing="5.0">
-               <children>
-                  <Button alignment="TOP_LEFT" defaultButton="true" mnemonicParsing="false" onAction="#onButtonNouveauPrelevement" text="Nouveau prélèvement">
+                <HBox spacing="5.0">
+                    <children>
+                        <Button alignment="TOP_LEFT" mnemonicParsing="false" onAction="#onButtonNouveauPrelevement" text="Nouveau prélèvement">
+                            <graphic>
+                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/1445538869_edit.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button alignment="TOP_LEFT" mnemonicParsing="false" onAction="#onButtonRechercher" text="Rechercher">
                      <graphic>
-                        <ImageView pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/1445538869_edit.png" />
+                              <Image url="@images/1445610072_note_search.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button mnemonicParsing="false" onAction="#onButtonRechercher" text="Rechercher" />
-                  <Region HBox.hgrow="ALWAYS" />
-                  <Button fx:id="btnQuitter" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#onButtonQuitter" text="Quitter">
-                     <graphic>
-                        <ImageView pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/1445538862_lock_locked.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
-               </children>
-               <VBox.margin>
-                  <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
-               </VBox.margin>
-            </HBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnQuitter" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#onButtonQuitter" text="Quitter">
+                            <graphic>
+                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/1445538862_lock_locked.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="2.0" left="5.0" right="5.0" top="1.0" />
+                    </VBox.margin>
+                </HBox>
                 <Accordion>
                     <panes>
                         <TitledPane fx:id="titledPanePrelevement" text="Prélèvement (Ajout, modif, suppression)">
@@ -47,71 +56,121 @@
                                     <children>
                                         <VBox spacing="2.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <children>
-                                    <HBox>
-                                       <children>
-                                          <Label text="Id : " />
-                                          <Label fx:id="labelId" />
-                                       </children>
-                                    </HBox>
+                                                <HBox>
+                                                    <children>
+                                                        <Label text="Id : " />
+                                                        <Label fx:id="labelId" />
+                                                    </children>
+                                                </HBox>
                                                 <DatePicker fx:id="datepckAjouterDate" layoutX="14.0" layoutY="118.0" promptText="Date" />
                                                 <TextField fx:id="txtfldAjouterNom" promptText="Nom" />
                                                 <TextField fx:id="txtfldAjouterType" layoutX="26.0" layoutY="47.0" promptText="Type" />
                                                 <TextField fx:id="txtfldAjouterCasier" layoutX="26.0" layoutY="78.0" promptText="Casier" />
-                                    <HBox spacing="5.0">
-                                       <children>
-                                                      <TextField fx:id="txtfldAjouterCheminComplet" promptText="Chemin document" HBox.hgrow="ALWAYS" />
-                                          <Button mnemonicParsing="false" onAction="#onButtonSelectionnerFichier" text="Sélectionner le fichier..." />
-                                          <Button mnemonicParsing="false" text="Ouvrir" />
-                                       </children>
-                                    </HBox>
                                                 <HBox spacing="5.0">
                                                     <children>
-                                                        <Button fx:id="btnAjouterPrelevement" mnemonicParsing="false" onAction="#onButtonAjouterPrelevement" text="Ajouter" />
-                                                        <Button fx:id="btnModifierPrelevement" mnemonicParsing="false" onAction="#onButtonModifierPrelevement" text="Modifier" />
-                                                        <Button fx:id="btnSupprimerPrelevement" mnemonicParsing="false" onAction="#onButtonSupprimerPrelevement" text="Supprimer" />
-                                                        <Region HBox.hgrow="ALWAYS">
-                                             <HBox.margin>
-                                                <Insets />
-                                             </HBox.margin></Region>
-                                                        <Button fx:id="btnEffacerFormulaire" mnemonicParsing="false" onAction="#onButtonEffacerFormulaire" text="Effacer le formulaire" />
+                                                        <TextField fx:id="txtfldAjouterCheminComplet" promptText="Chemin document" HBox.hgrow="ALWAYS" />
+                                                        <Button mnemonicParsing="false" onAction="#onButtonSelectionnerFichier" text="Sélectionner le fichier...">
+                                             <graphic>
+                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@images/1445538877_folder_upload.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></Button>
+                                                        <Button mnemonicParsing="false" text="Ouvrir">
+                                             <graphic>
+                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@images/folder_edit.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></Button>
                                                     </children>
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
+                                                </HBox>
+                                                <HBox spacing="5.0">
+                                                    <children>
+                                                        <Button fx:id="btnAjouterPrelevement" mnemonicParsing="false" onAction="#onButtonAjouterPrelevement" text="Ajouter">
+                                             <graphic>
+                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@images/1445610390_note_add.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></Button>
+                                                        <Button fx:id="btnModifierPrelevement" mnemonicParsing="false" onAction="#onButtonModifierPrelevement" text="Modifier">
+                                             <graphic>
+                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@images/1445610477_note_upload.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></Button>
+                                                        <Button fx:id="btnSupprimerPrelevement" mnemonicParsing="false" onAction="#onButtonSupprimerPrelevement" text="Supprimer">
+                                             <graphic>
+                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@images/1445610404_note_deny.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></Button>
+                                                        <Region HBox.hgrow="ALWAYS">
+                                                            <HBox.margin>
+                                                                <Insets />
+                                                            </HBox.margin>
+                                                        </Region>
+                                                        <Button fx:id="btnEffacerFormulaire" mnemonicParsing="false" onAction="#onButtonEffacerFormulaire" text="Effacer le formulaire">
+                                             <graphic>
+                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@images/1445539011_note.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></Button>
+                                                    </children>
+                                                    <VBox.margin>
+                                                        <Insets top="10.0" />
+                                                    </VBox.margin>
                                                 </HBox>
                                             </children>
                                         </VBox>
                                     </children>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
+                                    <padding>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </padding>
                                 </AnchorPane>
                             </content>
                         </TitledPane>
-                      <TitledPane fx:id="titledPaneRechercher" text="Rechercher">
-                          <content>
-                              <AnchorPane style="-fx-background-color: #f118e4;">
-                                  <children>
-                                      <HBox fillHeight="false" spacing="5.0">
-                                          <children>
-                                              <TextField fx:id="dateRecherche" promptText="Date" />
-                                              <TextField fx:id="txtRechercheNom" promptText="Nom" />
-                                              <TextField fx:id="txtRechercheType" promptText="Type" />
-                                              <CheckBox fx:id="chkLienBrise" mnemonicParsing="false" text="Lien brisé" />
-                                              <Button fx:id="btnEffacerFiltre" mnemonicParsing="false" onAction="#onButtonEffacerFiltre" text="Effacer le filtre" />
-                                          </children>
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                                      </HBox>
-                                  </children>
-                              </AnchorPane>
-                          </content>
-                      </TitledPane>
+                        <TitledPane fx:id="titledPaneRechercher" text="Rechercher">
+                            <content>
+                                <AnchorPane style="-fx-background-color: #f118e4;">
+                                    <children>
+                                        <HBox fillHeight="false" spacing="5.0">
+                                            <children>
+                                                <TextField fx:id="dateRecherche" promptText="Date" />
+                                                <TextField fx:id="txtRechercheNom" promptText="Nom" />
+                                                <TextField fx:id="txtRechercheType" promptText="Type" />
+                                                <CheckBox fx:id="chkLienBrise" mnemonicParsing="false" text="Lien brisé" />
+                                                <Button fx:id="btnEffacerFiltre" mnemonicParsing="false" onAction="#onButtonEffacerFiltre" text="Effacer le filtre">
+                                       <graphic>
+                                          <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/1445538097_star_empty.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic></Button>
+                                            </children>
+                                            <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                            </padding>
+                                        </HBox>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </TitledPane>
                     </panes>
-               <VBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </VBox.margin>
+                    <VBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                    </VBox.margin>
                 </Accordion>
                 <TableView fx:id="tablePrelevement" onSort="#onButtonRechercher" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                     <columns>
@@ -138,14 +197,14 @@
                         </TableColumn>
                         <TableColumn fx:id="chemin" prefWidth="75.0" text="Chemin" visible="false" />
                     </columns>
-               <VBox.margin>
-                  <Insets bottom="1.0" left="5.0" right="5.0" />
-               </VBox.margin>
+                    <VBox.margin>
+                        <Insets bottom="1.0" left="5.0" right="5.0" />
+                    </VBox.margin>
                 </TableView>
             </children>
         </VBox>
     </children>
-   <opaqueInsets>
-      <Insets />
-   </opaqueInsets>
+    <opaqueInsets>
+        <Insets />
+    </opaqueInsets>
 </AnchorPane>
