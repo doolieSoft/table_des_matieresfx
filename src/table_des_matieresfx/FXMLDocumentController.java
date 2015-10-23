@@ -275,13 +275,17 @@ public class FXMLDocumentController implements Initializable {
         ResultSet rs = null;
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:table_des_matieres.db");
+            txtfldAjouterNom.setText(MyUtil.toUpperCaseExceptµ(txtfldAjouterNom.getText().trim()));
+            txtfldAjouterType.setText(MyUtil.toUpperCaseExceptµ(txtfldAjouterType.getText().trim()));
+            txtfldAjouterCasier.setText(MyUtil.toUpperCaseExceptµ(txtfldAjouterCasier.getText().trim()));
+            txtfldAjouterCheminComplet.setText(MyUtil.toUpperCaseExceptµ(txtfldAjouterCheminComplet.getText().trim()));
 
             statement = connection.createStatement();
             String query = "INSERT INTO ELEMENT(date, nom, type, casier, chemin) VALUES ('" + datepckAjouterDate.getEditor().getText() + "'"
-                    + ", '" + MyUtil.toUpperCaseExceptµ(txtfldAjouterNom.getText()) + "'"
-                    + ", '" + MyUtil.toUpperCaseExceptµ(txtfldAjouterType.getText()) + "'"
-                    + ", '" + MyUtil.toUpperCaseExceptµ(txtfldAjouterCasier.getText()) + "'"
-                    + ", '" + MyUtil.toUpperCaseExceptµ(txtfldAjouterCheminComplet.getText()).trim() + "')";
+                    + ", '" + txtfldAjouterNom.getText() + "'"
+                    + ", '" + txtfldAjouterType.getText() + "'"
+                    + ", '" + txtfldAjouterCasier.getText() + "'"
+                    + ", '" + txtfldAjouterCheminComplet.getText() + "')";
 
             int ret = statement.executeUpdate(query);
             rs = statement.getGeneratedKeys();
@@ -322,11 +326,17 @@ public class FXMLDocumentController implements Initializable {
             connection = DriverManager.getConnection("jdbc:sqlite:table_des_matieres.db");
 
             statement = connection.createStatement();
+
+            txtfldAjouterNom.setText(MyUtil.toUpperCaseExceptµ(txtfldAjouterNom.getText().trim()));
+            txtfldAjouterType.setText(MyUtil.toUpperCaseExceptµ(txtfldAjouterType.getText().trim()));
+            txtfldAjouterCasier.setText(MyUtil.toUpperCaseExceptµ(txtfldAjouterCasier.getText().trim()));
+            txtfldAjouterCheminComplet.setText(MyUtil.toUpperCaseExceptµ(txtfldAjouterCheminComplet.getText().trim()));
+
             String query = "UPDATE ELEMENT SET DATE='" + datepckAjouterDate.getEditor().getText() + "'"
-                    + ", NOM='" + MyUtil.toUpperCaseExceptµ(txtfldAjouterNom.getText()) + "'"
-                    + ", TYPE='" + MyUtil.toUpperCaseExceptµ(txtfldAjouterType.getText()) + "'"
-                    + ", CASIER='" + MyUtil.toUpperCaseExceptµ(txtfldAjouterCasier.getText()) + "' "
-                    + ", CHEMIN='" + MyUtil.toUpperCaseExceptµ(txtfldAjouterCheminComplet.getText()).trim() + "' "
+                    + ", NOM='" + txtfldAjouterNom.getText() + "'"
+                    + ", TYPE='" + txtfldAjouterType.getText() + "'"
+                    + ", CASIER='" + txtfldAjouterCasier.getText() + "' "
+                    + ", CHEMIN='" + txtfldAjouterCheminComplet.getText() + "' "
                     + " WHERE ELEMENT_ID=" + labelId.getText();
 
             int ret = statement.executeUpdate(query);
@@ -335,10 +345,10 @@ public class FXMLDocumentController implements Initializable {
             data.set(indexSelected,
                     new Prelevement(Integer.valueOf(labelId.getText()),
                             datepckAjouterDate.getEditor().getText(),
-                            MyUtil.toUpperCaseExceptµ(txtfldAjouterNom.getText()),
-                            MyUtil.toUpperCaseExceptµ(txtfldAjouterType.getText()),
-                            MyUtil.toUpperCaseExceptµ(txtfldAjouterCasier.getText()),
-                            MyUtil.toUpperCaseExceptµ(txtfldAjouterCheminComplet.getText())));
+                            txtfldAjouterNom.getText(),
+                            txtfldAjouterType.getText(),
+                            txtfldAjouterCasier.getText(),
+                            txtfldAjouterCheminComplet.getText()));
 
             tablePrelevement.getSelectionModel().select(indexSelected);
 
