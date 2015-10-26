@@ -6,6 +6,7 @@
 package table_des_matieresfx;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -34,6 +35,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -42,9 +45,12 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.StringConverter;
+import org.controlsfx.control.NotificationPane;
+import org.controlsfx.control.Notifications;
 import org.controlsfx.control.textfield.TextFields;
 import table_des_matieresfx.lib.MyUtil;
 
@@ -487,7 +493,27 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     public void onButtonOuvrir() {
+        try {
+            if (txtfldAjouterCheminComplet.getText() == null || txtfldAjouterCheminComplet.getText().isEmpty()) {
+                // create a notification
+                Notifications.create()
+                        .title("Impossible d'ouvrir le fichier")
+                        .text("Le champ chemin est vide, veuillez compléter le formulaire!")
+                        .showWarning();
 
+            } else {
+                java.awt.Desktop.getDesktop().open(new File(txtfldAjouterCheminComplet.getText()));
+            }
+
+        } catch (java.lang.IllegalArgumentException ex) {
+            Notifications.create()
+                    .title("Fichier non trouvé")
+                    .text("Le fichier que vous essayez d'ouvrir est introuvable!")
+                    .showWarning();
+        } catch (IOException ex) {
+
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
