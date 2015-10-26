@@ -27,13 +27,14 @@
                             </graphic>
                         </Button>
                         <Button alignment="TOP_LEFT" mnemonicParsing="false" onAction="#onButtonRechercher" text="Rechercher">
-                     <graphic>
-                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/1445610072_note_search.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
+                            <graphic>
+                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/1445610072_note_search.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
                         <Region HBox.hgrow="ALWAYS" />
                         <Button fx:id="btnQuitter" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#onButtonQuitter" text="Quitter">
                             <graphic>
@@ -71,62 +72,68 @@
                                                     <children>
                                                         <TextField fx:id="txtfldAjouterCheminComplet" promptText="Chemin document" HBox.hgrow="ALWAYS" />
                                                         <Button mnemonicParsing="false" onAction="#onButtonSelectionnerFichier" text="Sélectionner le fichier...">
-                                             <graphic>
-                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@images/1445538877_folder_upload.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic></Button>
+                                                            <graphic>
+                                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                                    <image>
+                                                                        <Image url="@images/1445538877_folder_upload.png" />
+                                                                    </image>
+                                                                </ImageView>
+                                                            </graphic>
+                                                        </Button>
                                                         <Button mnemonicParsing="false" text="Ouvrir">
-                                             <graphic>
-                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@images/folder_edit.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic></Button>
+                                                            <graphic>
+                                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                                    <image>
+                                                                        <Image url="@images/folder_edit.png" />
+                                                                    </image>
+                                                                </ImageView>
+                                                            </graphic>
+                                                        </Button>
                                                     </children>
                                                 </HBox>
                                                 <HBox spacing="5.0">
                                                     <children>
                                                         <Button fx:id="btnAjouterPrelevement" mnemonicParsing="false" onAction="#onButtonAjouterPrelevement" text="Ajouter">
-                                             <graphic>
-                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@images/1445610390_note_add.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic></Button>
+                                                            <graphic>
+                                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                                    <image>
+                                                                        <Image url="@images/1445610390_note_add.png" />
+                                                                    </image>
+                                                                </ImageView>
+                                                            </graphic>
+                                                        </Button>
                                                         <Button fx:id="btnModifierPrelevement" mnemonicParsing="false" onAction="#onButtonModifierPrelevement" text="Modifier">
-                                             <graphic>
-                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@images/1445610477_note_upload.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic></Button>
+                                                            <graphic>
+                                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                                    <image>
+                                                                        <Image url="@images/1445610477_note_upload.png" />
+                                                                    </image>
+                                                                </ImageView>
+                                                            </graphic>
+                                                        </Button>
                                                         <Button fx:id="btnSupprimerPrelevement" mnemonicParsing="false" onAction="#onButtonSupprimerPrelevement" text="Supprimer">
-                                             <graphic>
-                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@images/1445610404_note_deny.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic></Button>
+                                                            <graphic>
+                                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                                    <image>
+                                                                        <Image url="@images/1445610404_note_deny.png" />
+                                                                    </image>
+                                                                </ImageView>
+                                                            </graphic>
+                                                        </Button>
                                                         <Region HBox.hgrow="ALWAYS">
                                                             <HBox.margin>
                                                                 <Insets />
                                                             </HBox.margin>
                                                         </Region>
                                                         <Button fx:id="btnEffacerFormulaire" mnemonicParsing="false" onAction="#onButtonEffacerFormulaire" text="Effacer le formulaire">
-                                             <graphic>
-                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@images/1445539011_note.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic></Button>
+                                                            <graphic>
+                                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                                    <image>
+                                                                        <Image url="@images/1445539011_note.png" />
+                                                                    </image>
+                                                                </ImageView>
+                                                            </graphic>
+                                                        </Button>
                                                     </children>
                                                     <VBox.margin>
                                                         <Insets top="10.0" />
@@ -152,13 +159,14 @@
                                                 <TextField fx:id="txtRechercheType" promptText="Type" />
                                                 <CheckBox fx:id="chkLienBrise" mnemonicParsing="false" text="Lien brisé" />
                                                 <Button fx:id="btnEffacerFiltre" mnemonicParsing="false" onAction="#onButtonEffacerFiltre" text="Effacer le filtre">
-                                       <graphic>
-                                          <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@images/1445538097_star_empty.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic></Button>
+                                                    <graphic>
+                                                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                            <image>
+                                                                <Image url="@images/1445538097_star_empty.png" />
+                                                            </image>
+                                                        </ImageView>
+                                                    </graphic>
+                                                </Button>
                                             </children>
                                             <padding>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

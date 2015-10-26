@@ -15,8 +15,10 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,6 +45,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.StringConverter;
+import org.controlsfx.control.textfield.TextFields;
 import table_des_matieresfx.lib.MyUtil;
 
 /**
@@ -54,8 +57,8 @@ public class FXMLDocumentController implements Initializable {
     private Connection connection;
 
     private ObservableList<Prelevement> data;
-    SortedList<Prelevement> sortedData;
-
+    private SortedList<Prelevement> sortedData;
+    private FilteredList<Prelevement> filteredData;
     @FXML
     private AnchorPane principalPane;
     @FXML
@@ -142,15 +145,27 @@ public class FXMLDocumentController implements Initializable {
         });
 
         tablePrelevement.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tablePrelevement.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                btnAjouterPrelevement.setDisable(true);
+                btnModifierPrelevement.setDisable(false);
+                btnSupprimerPrelevement.setDisable(false);
+
+                labelId.setText(Integer.toString(newSelection.getId()));
+                datepckAjouterDate.getEditor().setText(newSelection.getDate());
+                txtfldAjouterNom.setText(newSelection.getNom());
+                txtfldAjouterType.setText(newSelection.getType());
+                txtfldAjouterCasier.setText(newSelection.getCasier());
+                txtfldAjouterCheminComplet.setText(newSelection.getChemin());
+
+            }
+        });
+
         tablePrelevement.setRowFactory(tv -> {
             TableRow<Prelevement> row = new TableRow<>();
 
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() > 0 && (!row.isEmpty())) {
-
-                    btnAjouterPrelevement.setDisable(true);
-                    btnModifierPrelevement.setDisable(false);
-                    btnSupprimerPrelevement.setDisable(false);
 
                     Prelevement rowData = row.getItem();
                     labelId.setText(Integer.toString(rowData.getId()));
@@ -159,14 +174,11 @@ public class FXMLDocumentController implements Initializable {
                     txtfldAjouterType.setText(rowData.getType());
                     txtfldAjouterCasier.setText(rowData.getCasier());
                     txtfldAjouterCheminComplet.setText(rowData.getChemin());
-
                     titledPanePrelevement.setExpanded(true);
-
                 }
             });
             return row;
         });
-
         try {
             data = getInitialPrelevementData();
 
@@ -177,7 +189,7 @@ public class FXMLDocumentController implements Initializable {
         }
 
         // 1. Wrap the ObservableList in a FilteredList (initially display all data).
-        FilteredList<Prelevement> filteredData = new FilteredList<>(data, p -> true);
+        filteredData = new FilteredList<>(data, p -> true);
 
         dateRecherche.textProperty().addListener(e -> {
             filteredData.setPredicate(isDateInTable().and(isNomInTable()).and(isTypeInTable()).and(isLienBriseInTable()));
@@ -201,6 +213,41 @@ public class FXMLDocumentController implements Initializable {
         sortedData.comparatorProperty().bind(tablePrelevement.comparatorProperty());
         // 4. Add sorted (and filtered) data to the table.
         tablePrelevement.setItems(sortedData);
+
+        Set<String> hashsetNom = new HashSet<>();
+
+        filteredData.stream().forEach((p) -> {
+            hashsetNom.add(p.getNom());
+        });
+
+        TextFields.bindAutoCompletion(
+                txtRechercheNom,
+                hashsetNom);
+        TextFields.bindAutoCompletion(
+                txtfldAjouterNom,
+                hashsetNom);
+
+        Set<String> hashsetType = new HashSet<>();
+
+        filteredData.stream().forEach((p) -> {
+            hashsetType.add(p.getType());
+        });
+
+        TextFields.bindAutoCompletion(
+                txtRechercheType,
+                hashsetType);
+        TextFields.bindAutoCompletion(
+                txtfldAjouterType,
+                hashsetType);
+
+        Set<String> hashsetCasier = new HashSet<>();
+        filteredData.stream().forEach((p) -> {
+            hashsetCasier.add(p.getCasier());
+        });
+
+        TextFields.bindAutoCompletion(
+                txtfldAjouterCasier,
+                hashsetCasier);
 
     }
 
@@ -341,8 +388,11 @@ public class FXMLDocumentController implements Initializable {
 
             int ret = statement.executeUpdate(query);
 
-            int indexSelected = tablePrelevement.getSelectionModel().getSelectedIndex();
-            data.set(indexSelected,
+            int idSelected = tablePrelevement.getSelectionModel().getSelectedIndex();
+
+            int itemSelected = data.indexOf(tablePrelevement.getSelectionModel().getSelectedItem());
+
+            data.set(data.indexOf(tablePrelevement.getSelectionModel().getSelectedItem()),
                     new Prelevement(Integer.valueOf(labelId.getText()),
                             datepckAjouterDate.getEditor().getText(),
                             txtfldAjouterNom.getText(),
@@ -350,8 +400,8 @@ public class FXMLDocumentController implements Initializable {
                             txtfldAjouterCasier.getText(),
                             txtfldAjouterCheminComplet.getText()));
 
-            tablePrelevement.getSelectionModel().select(indexSelected);
-
+            tablePrelevement.getSelectionModel().select(idSelected);
+            tablePrelevement.requestFocus();
         } catch (SQLException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
             System.out.printf(FXMLDocumentController.class.getName() + " " + ex.getLocalizedMessage());
@@ -379,7 +429,7 @@ public class FXMLDocumentController implements Initializable {
             int ret = statement.executeUpdate(query);
 
             int indexSelected = tablePrelevement.getSelectionModel().getSelectedIndex();
-            data.remove(indexSelected);
+            data.remove(data.indexOf(tablePrelevement.getSelectionModel().getSelectedItem()));
             tablePrelevement.getSelectionModel().clearSelection();
             clearForm();
             btnAjouterPrelevement.setDisable(false);
