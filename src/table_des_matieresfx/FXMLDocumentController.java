@@ -40,7 +40,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -114,16 +113,15 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        ImageView iv = new ImageView(getClass().getResource("images/bullet_deny.png").toExternalForm());
-
         btnModifierPrelevement.setDisable(true);
         btnSupprimerPrelevement.setDisable(true);
 
-        id.setCellValueFactory(new PropertyValueFactory<Prelevement, String>("id"));
-        date.setCellValueFactory(new PropertyValueFactory<Prelevement, String>("date"));
-        nom.setCellValueFactory(new PropertyValueFactory<Prelevement, String>("nom"));
-        type.setCellValueFactory(new PropertyValueFactory<Prelevement, String>("type"));
-        casier.setCellValueFactory(new PropertyValueFactory<Prelevement, String>("casier"));
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        nom.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        type.setCellValueFactory(new PropertyValueFactory<>("type"));
+        casier.setCellValueFactory(new PropertyValueFactory<>("casier"));
+        chemin.setCellValueFactory(new PropertyValueFactory<>("chemin"));
 
         datepckAjouterDate.setConverter(new StringConverter<LocalDate>() {
             private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
@@ -354,10 +352,14 @@ public class FXMLDocumentController implements Initializable {
             System.out.printf(FXMLDocumentController.class.getName() + " " + ex.getLocalizedMessage());
         } finally {
             try {
-                rs.close();
+                if (rs != null) {
+                    rs.close();
+                }
             } catch (Exception e) { /* ignored */ }
             try {
-                statement.close();
+                if (statement != null) {
+                    statement.close();
+                }
             } catch (Exception e) { /* ignored */ }
             try {
                 connection.close();
@@ -391,8 +393,6 @@ public class FXMLDocumentController implements Initializable {
 
             int idSelected = tablePrelevement.getSelectionModel().getSelectedIndex();
 
-            int itemSelected = data.indexOf(tablePrelevement.getSelectionModel().getSelectedItem());
-
             data.set(data.indexOf(tablePrelevement.getSelectionModel().getSelectedItem()),
                     new Prelevement(Integer.valueOf(labelId.getText()),
                             datepckAjouterDate.getEditor().getText(),
@@ -409,7 +409,9 @@ public class FXMLDocumentController implements Initializable {
         } finally {
             //try { rs.close(); } catch (Exception e) { /* ignored */ }
             try {
-                statement.close();
+                if (statement != null) {
+                    statement.close();
+                }
             } catch (Exception e) { /* ignored */ }
             try {
                 connection.close();
@@ -429,7 +431,6 @@ public class FXMLDocumentController implements Initializable {
 
             int ret = statement.executeUpdate(query);
 
-            int indexSelected = tablePrelevement.getSelectionModel().getSelectedIndex();
             data.remove(data.indexOf(tablePrelevement.getSelectionModel().getSelectedItem()));
             tablePrelevement.getSelectionModel().clearSelection();
             clearForm();
@@ -443,7 +444,9 @@ public class FXMLDocumentController implements Initializable {
         } finally {
             //try { rs.close(); } catch (Exception e) { /* ignored */ }
             try {
-                statement.close();
+                if (statement != null) {
+                    statement.close();
+                }
             } catch (Exception e) { /* ignored */ }
             try {
                 connection.close();
@@ -490,7 +493,6 @@ public class FXMLDocumentController implements Initializable {
     public void onButtonOuvrir() {
         try {
             if (txtfldAjouterCheminComplet.getText() == null || txtfldAjouterCheminComplet.getText().isEmpty()) {
-                // create a notification
                 Notifications.create()
                         .title("Impossible d'ouvrir le fichier")
                         .text("Le champ chemin est vide, veuillez compléter le formulaire!")
@@ -499,7 +501,6 @@ public class FXMLDocumentController implements Initializable {
             } else {
                 java.awt.Desktop.getDesktop().open(new File(txtfldAjouterCheminComplet.getText()));
             }
-
         } catch (java.lang.IllegalArgumentException ex) {
             Notifications.create()
                     .title("Fichier non trouvé")
@@ -520,11 +521,10 @@ public class FXMLDocumentController implements Initializable {
         List prelevements = new ArrayList();
 
         ResultSet rs = null;
-        Statement statement = null;
 
         connection = DriverManager.getConnection("jdbc:sqlite:table_des_matieres.db");
 
-        statement = connection.createStatement();
+        Statement statement = connection.createStatement();
         try {
             rs = statement.executeQuery(
                     "SELECT ELEMENT_ID, DATE, TYPE, NOM, CASIER, CHEMIN  FROM ELEMENT ORDER BY ELEMENT_ID");
@@ -540,7 +540,9 @@ public class FXMLDocumentController implements Initializable {
             connection.close();
         } finally {
             try {
-                rs.close();
+                if (rs != null) {
+                    rs.close();
+                }
             } catch (Exception e) { /* ignored */ }
             try {
                 statement.close();
